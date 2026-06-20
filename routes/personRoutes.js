@@ -33,5 +33,28 @@ router.get('/:works', async(req, res) =>{
     }
 });
 
+router.put('/:id', async(req, res) =>{
+    try{
+        const personId = req.params.id;
+        const updatedData = req.body;
+        const updatedPerson = await Person.findByIdAndUpdate(personId, updatedData, { new: true });
+        res.status(200).json(updatedPerson);
+    } catch (error) {
+        console.error('Error updating person:', error);
+        res.status(500).json({ error: 'Failed to update person' });
+    }
+});
+
+router.delete('/:id', async(req, res) =>{
+    try{
+        const personId = req.params.id;
+        await Person.findByIdAndDelete(personId);
+        res.status(200).json({ message: 'Person deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting person:', error);
+        res.status(500).json({ error: 'Failed to delete person' });
+    }   
+});
+
 
 module.exports = router;
